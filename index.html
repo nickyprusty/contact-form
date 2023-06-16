@@ -6,6 +6,206 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+  </script>
+  <script type="text/javascript">
+    (function () {
+      emailjs.init("YOUR_PUBLIC_KEY");
+    })();
+  </script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .card {
+      background-color: #fff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 1rem;
+      margin: 1rem;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .left-section {
+      flex: 1;
+      background-color: #007BBF;
+      color: #fff;
+      padding: 20px;
+      position: relative;
+      margin: 1rem;
+      border-radius: 1rem;
+    }
+
+    .left-section h2 {
+      margin-top: 0.5rem;
+    }
+
+    .right-section {
+      flex: 1;
+      padding: 1rem 2rem 1rem 1rem;
+    }
+
+    .contact-info {
+      margin-top: 20px;
+    }
+
+    .contact-info .info-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .contact-info i {
+      margin-right: 1rem;
+    }
+
+    form {
+      max-width: 100%;
+    }
+
+    form h2 {
+      margin-top: 0;
+    }
+
+    .form-row {
+      margin-bottom: 20px;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: end;
+      position: relative;
+      align-items: flex-start;
+    }
+
+    .btn-row>img {
+      position: absolute;
+      bottom: -7rem;
+      right: 9rem;
+    }
+
+    .material-input {
+      position: relative;
+    }
+
+    .material-input input,
+    .material-input textarea {
+      width: -webkit-fill-available;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: transparent;
+      border-bottom: 1px solid #ccc;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .material-input label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 14px;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      color: #aaa;
+    }
+
+    .material-input input:focus,
+    .material-input textarea:focus {
+      outline: none;
+      border-bottom: 2px solid #007BBF;
+    }
+
+    .material-input input:focus+label,
+    .material-input textarea:focus+label,
+    .material-input input:not(:placeholder-shown)+label,
+    .material-input textarea:not(:placeholder-shown)+label {
+      top: -0.75rem;
+      left: 0;
+      font-size: 12px;
+      color: #007BBF;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007BBF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #status-msg {
+      float: right;
+    }
+
+    #status-msg>p {
+      margin-top: 0;
+    }
+
+    .contact-info a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .contact-info a:hover,
+    .contact-info a:focus {
+      color: #ccc;
+      text-decoration: underline;
+    }
+
+    #character-count {
+      margin-top: -1.5rem;
+      font-size: smaller;
+      color: #aaaaaa;
+      /* margin-left: auto; */
+      float: right;
+    }
+
+    .circle-1 {
+      position: absolute;
+      width: 8rem;
+      height: 8rem;
+      right: 2rem;
+      bottom: 2rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .circle-2 {
+      position: absolute;
+      width: 20rem;
+      height: 20rem;
+      right: -10rem;
+      bottom: -10rem;
+      border-radius: 50%;
+      background: rgba(255, 249, 249, 0.13);
+    }
+
+    @media only screen and (max-width: 720px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .card {
+        margin: 1rem 0;
+      }
+
+      .left-section,
+      .right-section {
+        margin: 1rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -75,7 +275,13 @@
           </div>
           <div class="form-row">
             <div class="material-input">
-              <input type="text" id="subject" placeholder=" " maxlength="100" required>
+              <input type="tel" id="mobile_number" maxlength="10" pattern="^[0-9]{10}$" placeholder=" " required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <label for="mobile_number">Mobile Number</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="material-input">
+              <input type="text" id="subject" placeholder=" " maxlength="100">
               <label for="subject">Subject</label>
             </div>
           </div>
@@ -88,7 +294,7 @@
           </div>
 
           <div class="form-row btn-row">
-            <img src="./letter_send 1.png" alt="letter send" />
+            <img src="https://i.ibb.co/dB44SNC/letter-send-1.png" alt="letter send" />
             <button type="submit" id="send-btn">Send Message</button>
           </div>
           <div id="status-msg"></div>
@@ -96,7 +302,59 @@
       </div>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script>
+
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      document.getElementById('send-btn').disabled = true;
+      document.getElementById('status-msg').innerHTML = "";
+      var name = document.getElementById('name').value;
+      var email = document.getElementById('email').value;
+      var subject = document.getElementById('subject').value;
+      var message = document.getElementById('message').value;
+      var mobileNumber = document.getElementById('mobile_number').value;
+
+      var templateParams = {
+        from_name: name,
+        from_email: email,
+        subject: subject,
+        message: message,
+        mobile_number: mobileNumber
+      };
+
+
+      // Send email using EmailJS
+      emailjs.send('service_9np688i', 'template_94rhpaw', templateParams, "Xlgx85K0xFXzI7X9q")
+        .then(function (response) {
+          var successMsg = document.createElement('p');
+          successMsg.textContent = 'Thank you for getting in touch!';
+          successMsg.style.color = 'green';
+          document.getElementById('status-msg').appendChild(successMsg);
+
+          document.getElementById('send-btn').disabled = false;
+        }, function (error) {
+          var errorMsg = document.createElement('p');
+          errorMsg.textContent = 'There was an error sending the email. Please try again later.';
+          errorMsg.style.color = 'red';
+          document.getElementById('status-msg').appendChild(errorMsg);
+        });
+    });
+
+    var messageInput = document.getElementById('message');
+    var characterCount = document.getElementById('character-count');
+
+    // Function to update character count
+    function updateCharacterCount() {
+      var message = messageInput.value;
+      var count = message.length;
+      characterCount.textContent = count + '/3000';
+    }
+
+    // Event listener for input change in the message textarea
+    messageInput.addEventListener('input', updateCharacterCount);
+
+  </script>
 </body>
 
 </html>

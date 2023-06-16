@@ -2,58 +2,32 @@ var form = document.getElementById('contact-form');
 var sendBtn = document.getElementById('send-btn');
 var statusMsg = document.getElementById('status-msg');
 
-function handleFormSubmission(e) {
+document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
-
-    if (form.checkValidity()) {
-        // Get form data
-        var name = nameInput.value;
-        var email = emailInput.value;
-        var subject = subjectInput.value;
-        var message = messageInput.value;
-
-        // Create the email body
-        var body = "Name: " + name + "\n";
-        body += "Email: " + email + "\n";
-        body += "Subject: " + subject + "\n";
-        body += "Message: " + message;
-
-        // Send the email using your preferred email sending method/library
-        // Replace the code below with your actual email sending logic
-
-        // Example using EmailJS (https://www.emailjs.com/)
-        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-            to_email: "YOUR EMAIL ID",
-            from_name: name,
-            from_email: email,
-            subject: subject,
-            message: message
-        }).then(function () {
-            // Email sent successfully
-            var successMsg = document.createElement('p');
-            successMsg.textContent = 'Thank you for getting in touch!';
-            successMsg.style.color = 'green';
-            statusMsg.appendChild(successMsg);
-
-            form.reset();
-            sendBtn.disabled = true;
-        }).catch(function (error) {
-            // Error sending email
-            var errorMsg = document.createElement('p');
-            errorMsg.textContent = 'There was an error sending the email. Please try again later.';
-            errorMsg.style.color = 'red';
-            statusMsg.appendChild(errorMsg);
-        });
-    } else {
-        // Form is invalid, disable submit button
-        sendBtn.disabled = true;
-    }
-}
-
-
-// Event listener for form submission
-form.addEventListener('submit', handleFormSubmission);
-
+    
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var subject = document.getElementById('subject').value;
+    var message = document.getElementById('message').value;
+    
+    // Send email using EmailJS
+    emailjs.sendForm('service_bacl91i', this)
+      .then(function(response) {
+        var successMsg = document.createElement('p');
+        successMsg.textContent = 'Thank you for getting in touch!';
+        successMsg.style.color = '#007BBF';
+        document.getElementById('status-msg').appendChild(successMsg);
+        
+        document.getElementById('contact-form').reset();
+        document.getElementById('send-btn').disabled = true;
+      }, function(error) {
+        var errorMsg = document.createElement('p');
+        errorMsg.textContent = 'There was an error sending the email. Please try again later.';
+        errorMsg.style.color = 'red';
+        document.getElementById('status-msg').appendChild(errorMsg);
+      });
+  });
+  
 var messageInput = document.getElementById('message');
 var characterCount = document.getElementById('character-count');
 
